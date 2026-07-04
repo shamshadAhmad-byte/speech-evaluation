@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AirCheck — Speaking Evaluation Studio</title>
+<link rel="stylesheet" href="speakEvaluation.css" />
+</head>
+<body>
+
+<div class="ac-root">
+
+  <header class="ac-header">
+    <div class="ac-eyebrow"><span class="ac-dot"></span> LIVE SESSION</div>
+    <h1>AirCheck</h1>
+    <p class="ac-tagline">Speak on air. Get scored on grammar, vocabulary, and delivery.</p>
+  </header>
+
+  <main class="ac-grid">
+
+    <!-- ---------------- Left: capture panel ---------------- -->
+    <section class="ac-panel ac-panel--capture">
+
+      <div class="ac-topic-card">
+        <div class="ac-topic-top">
+          <span class="ac-topic-tag" id="topicTag">Technology</span>
+          <button class="ac-ghost-btn" id="shuffleBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+              <path d="M3 6h3.2c1.2 0 2.3.6 3 1.6l5.6 8.8c.7 1 1.8 1.6 3 1.6H21M17.5 5 21 6.5 19.5 10M3 18h3.2c1.2 0 2.3-.6 3-1.6l1-1.6M17.5 19 21 17.5 19.5 14"
+                stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            New topic
+          </button>
+        </div>
+        <p class="ac-topic-prompt" id="topicPrompt">Should social media platforms be required to verify the age of their users?</p>
+      </div>
+
+      <div class="ac-recorder">
+        <div class="ac-recorder-top">
+          <div class="ac-onair" id="onAirIndicator"><span class="ac-onair-dot"></span> <span id="onAirText">STANDBY</span></div>
+          <div class="ac-timer" id="timer">00:00</div>
+        </div>
+
+        <div class="ac-waveform" id="waveform" aria-hidden="true"></div>
+
+        <div class="ac-record-controls">
+          <button class="ac-mic-btn" id="micBtn" type="button" aria-label="Start recording">
+            <svg viewBox="0 0 24 24" fill="none" width="28" height="28" id="micIcon">
+              <path d="M12 15a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 0 0-7 0v5.5A3.5 3.5 0 0 0 12 15Z" stroke="currentColor" stroke-width="1.8" />
+              <path d="M6.5 11.5a5.5 5.5 0 0 0 11 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M12 17v3.2M9 20.2h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+          </button>
+          <div class="ac-record-hint" id="recordHint">Press the mic and speak for 100–200 words.</div>
+        </div>
+
+        <div class="ac-transcript-wrap">
+          <textarea class="ac-transcript" id="transcript" rows="7"
+            placeholder="Your transcript will appear here as you speak, or type it directly…"></textarea>
+          <div class="ac-wordcount" id="wordcount">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14" id="wordcountCheck" style="display:none">
+              <path d="m4 12 5.5 5.5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span id="wordcountText">0 words</span> <span class="ac-wordcount-target">· target 100–200</span>
+          </div>
+        </div>
+
+        <div class="ac-actions">
+          <button class="ac-secondary-btn" id="clearBtn" type="button">Clear</button>
+          <button class="ac-primary-btn" id="evaluateBtn" type="button" disabled>Evaluate response</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- Right: results panel ---------------- -->
+    <section class="ac-panel ac-panel--results" id="resultsPanel">
+      <div class="ac-empty" id="emptyState">
+        <div class="ac-empty-waveform">
+          <span style="height:18px"></span><span style="height:34px"></span>
+          <span style="height:50px"></span><span style="height:34px"></span><span style="height:18px"></span>
+        </div>
+        <p>Your evaluation report will show up here once you submit a response.</p>
+      </div>
+
+      <div class="ac-empty" id="loadingState" style="display:none">
+        <div class="ac-empty-waveform ac-empty-waveform--pulse">
+          <span style="height:18px"></span><span style="height:34px"></span>
+          <span style="height:50px"></span><span style="height:34px"></span><span style="height:18px"></span>
+        </div>
+        <p>Analyzing broadcast…</p>
+      </div>
+
+      <div class="ac-error" id="errorState" style="display:none"></div>
+
+      <div class="ac-report" id="reportState" style="display:none">
+        <div class="ac-report-head">
+          <div class="ac-gauge ac-gauge--large" id="overallGauge"></div>
+          <p class="ac-report-overall-feedback" id="overallFeedback"></p>
+        </div>
+
+        <div class="ac-report-sub-scores">
+          <div class="ac-score-row">
+            <div class="ac-gauge" id="grammarGauge"></div>
+            <p id="grammarFeedback"></p>
+          </div>
+          <div class="ac-score-row">
+            <div class="ac-gauge" id="vocabGauge"></div>
+            <p id="vocabFeedback"></p>
+          </div>
+        </div>
+
+        <div class="ac-suggestions">
+          <h3>Suggestions for improvement</h3>
+          <ol id="suggestionsList"></ol>
+        </div>
+
+        <div class="ac-demo-note" id="demoNote" style="display:none">
+          Demo scoring — connect <code>/api/evaluate-speech</code> to your Gemini-powered backend for real evaluations.
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="speakEvaluation.js"></script>
+</body>
+</html>
