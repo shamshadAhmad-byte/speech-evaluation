@@ -173,7 +173,7 @@ loginForm.addEventListener("submit", async (e) => {
 
     try {
         const token = localStorage.getItem("token");
-        const res = await fetch("https://speech-evaluation-qsxp.onrender.com/login", {
+        const res = await fetch("https://speech-evaluation-1.onrender.com/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -204,7 +204,7 @@ registerForm.addEventListener("submit", async (e) => {
     const password = document.getElementById("registerPassword").value;
 
     try {
-        const res = await fetch("https://speech-evaluation-qsxp.onrender.com/register", {
+        const res = await fetch("https://speech-evaluation-1.onrender.com/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
