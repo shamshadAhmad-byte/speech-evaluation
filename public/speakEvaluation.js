@@ -396,9 +396,11 @@ function generateMockEvaluation(transcript, topic) {
 
 async function evaluateSpeech(topic, transcript) {
   try {
+    const token = localStorage.getItem("token");
+    if(!token) alert("You must be logged in to evaluate speech.");
     const res = await fetch(EVAL_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
       body: JSON.stringify({ topic: topic.prompt, transcript }),
     });
     if (!res.ok) throw new Error("Evaluation service unavailable");
@@ -407,7 +409,8 @@ async function evaluateSpeech(topic, transcript) {
   } catch (err) {
     // No backend wired up yet (or it errored) — use the local demo evaluator.
     await new Promise((r) => setTimeout(r, 900));
-    return normalizeEvaluationResponse(generateMockEvaluation(transcript, topic), transcript, topic);
+    alert("Evaluation service unavailable, using local mock evaluation:" + err.message);
+    // return normalizeEvaluationResponse(generateMockEvaluation(transcript, topic), transcript, topic);
   }
 }
 
